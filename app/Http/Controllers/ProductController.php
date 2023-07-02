@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\StoreProductRequest;
 use App\Http\Requests\UpdateProductRequest;
+use App\Http\Resources\Product\ProductCollection;
 use App\Models\Product;
 
 class ProductController extends Controller
@@ -13,7 +14,12 @@ class ProductController extends Controller
      */
     public function index()
     {
-        //
+        return new ProductCollection(
+            Product::query()
+                ->with('category')
+                ->orderByDesc('created_at')
+                ->paginate(config('controller.pagination_limit'))
+        );
     }
 
     /**
