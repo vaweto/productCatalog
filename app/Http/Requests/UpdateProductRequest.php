@@ -2,6 +2,7 @@
 
 namespace App\Http\Requests;
 
+use App\Rules\AlphaSpaceDashUnderscore;
 use Illuminate\Foundation\Http\FormRequest;
 
 class UpdateProductRequest extends FormRequest
@@ -11,7 +12,7 @@ class UpdateProductRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        return false;
+        return true;
     }
 
     /**
@@ -22,7 +23,12 @@ class UpdateProductRequest extends FormRequest
     public function rules(): array
     {
         return [
-            //
+            'name' => ['unique:products,name','max:10', new AlphaSpaceDashUnderscore()],
+            'code' => 'unique:products,code|alpha_dash:ascii|lowercase|max:255',
+            'category_id' => 'exists:App\Models\Category,id',
+            'price' => 'decimal:0,2',
+            'released_at' => 'date|after_or_equal:now' ,
+            'tags.*' => 'exists:App\Models\Tag,id',
         ];
     }
 }

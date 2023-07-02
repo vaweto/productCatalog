@@ -14,17 +14,27 @@ class ProductResource extends JsonResource
      */
     public function toArray(Request $request): array
     {
+
         return [
             'id' => $this->id,
             'name' => $this->name,
             'code' => $this->code,
             'price' => $this->price,
-            'release_date' => $this->release_date,
+            'release_date' => $this->released_at,
+            'released' => $this->released,
             'category' => $this->whenLoaded('category', function () {
                 return [
-                    'category_id' => $this->category->id,
-                    'category_name' => $this->category->name,
+                    'id' => $this->category->id,
+                    'name' => $this->category->name,
                 ];
+            }),
+            'tags' => $this->whenLoaded('tags', function () {
+                return $this->tags->map(function ($tag) {
+                    return [
+                        'id' => $tag->id,
+                        'name' => $tag->name
+                    ];
+                });
             }),
         ];
     }

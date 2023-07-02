@@ -5,8 +5,13 @@ namespace App\Http\Controllers;
 use App\Http\Requests\StoreProductRequest;
 use App\Http\Requests\UpdateProductRequest;
 use App\Http\Resources\Product\ProductCollection;
+use App\Http\Resources\Product\ProductResource;
+use App\Http\Resources\Product\ProductWithLinksResource;
 use App\Models\Product;
+use App\Models\Tag;
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class ProductController extends Controller
 {
@@ -30,7 +35,24 @@ class ProductController extends Controller
      */
     public function store(StoreProductRequest $request)
     {
-        //
+        try {
+            $product = DB::transaction(
+                callback: fn (): Model => Product::query()->create(
+                    attributes: $request->validated(),
+                ),
+            );
+
+            if($request->validated('tags')) {
+                $tags = Tag::findMany($request->validated('tags'));
+                $product->tags()->saveMany($tags);
+            }
+
+            return response()->json($product->toArray(), 201);
+
+        } catch (\Exception $exception) {
+            return abort(500, $exception->getMessage());
+        }
+
     }
 
     /**
@@ -38,7 +60,12 @@ class ProductController extends Controller
      */
     public function show(Product $product)
     {
-        //
+        return new ProductWithLinksResource(
+            $product->load([
+                'category:id,name',
+                'tags:id,name'
+            ])
+        );
     }
 
     /**
@@ -46,7 +73,23 @@ class ProductController extends Controller
      */
     public function update(UpdateProductRequest $request, Product $product)
     {
-        //
+        try {
+            DB::transaction(
+                callback: fn () => $product->update(
+                    attributes: $request->validated(),
+                ),
+            );
+
+            if($request->validated('tags')) {
+                $tags = Tag::findMany($request->validated('tags'));
+                $product->tags()->sync($tags);
+            }
+
+            return response()->json($product->fresh()->toArray());
+
+        } catch (\Exception $exception) {
+            return abort(500, $exception->getMessage());
+        }
     }
 
     /**
@@ -54,6 +97,12 @@ class ProductController extends Controller
      */
     public function destroy(Product $product)
     {
-        //
+        try {
+            $product->delete();
+            return response()->json('deleted');
+        }catch (\Exception $exception) {
+            return abort(500, $exception->getMessage());
+        }
+
     }
 }
