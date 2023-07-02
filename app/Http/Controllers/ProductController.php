@@ -6,19 +6,22 @@ use App\Http\Requests\StoreProductRequest;
 use App\Http\Requests\UpdateProductRequest;
 use App\Http\Resources\Product\ProductCollection;
 use App\Models\Product;
+use Illuminate\Http\Request;
 
 class ProductController extends Controller
 {
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request)
     {
         return new ProductCollection(
             Product::query()
+                ->filter($request)
                 ->with('category')
-                ->orderByDesc('created_at')
+                ->orderByDesc('id')
                 ->paginate(config('controller.pagination_limit'))
+                ->withQueryString()
         );
     }
 
