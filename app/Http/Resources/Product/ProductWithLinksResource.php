@@ -17,7 +17,14 @@ class ProductWithLinksResource extends JsonResource
         return [
             'info' => new ProductResource($this),
             'action_links' => [
-
+                'update' => [
+                    'method' => 'post',
+                    'url' => route('product.update', ['product' => $this->id]),
+                ],
+                'destroy' => [
+                    'method' => 'delete',
+                    'url' => route('product.delete', ['product' => $this->id]),
+                ],
             ]
         ];
     }

@@ -20,6 +20,8 @@ return new class extends Migration
             $table->float('price','10',2);
             $table->dateTime('released_at')->nullable();
             $table->timestamps();
+
+            $table->index('category_id');
         });
     }
 
