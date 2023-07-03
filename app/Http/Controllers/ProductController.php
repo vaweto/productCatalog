@@ -5,7 +5,6 @@ namespace App\Http\Controllers;
 use App\Http\Requests\StoreProductRequest;
 use App\Http\Requests\UpdateProductRequest;
 use App\Http\Resources\Product\ProductCollection;
-use App\Http\Resources\Product\ProductResource;
 use App\Http\Resources\Product\ProductWithLinksResource;
 use App\Models\Product;
 use App\Models\Tag;
@@ -42,7 +41,7 @@ class ProductController extends Controller
                 ),
             );
 
-            if($request->validated('tags')) {
+            if ($request->validated('tags')) {
                 $tags = Tag::findMany($request->validated('tags'));
                 $product->tags()->saveMany($tags);
             }
@@ -63,7 +62,7 @@ class ProductController extends Controller
         return new ProductWithLinksResource(
             $product->load([
                 'category:id,name',
-                'tags:id,name'
+                'tags:id,name',
             ])
         );
     }
@@ -80,7 +79,7 @@ class ProductController extends Controller
                 ),
             );
 
-            if($request->validated('tags')) {
+            if ($request->validated('tags')) {
                 $tags = Tag::findMany($request->validated('tags'));
                 $product->tags()->sync($tags);
             }
@@ -99,8 +98,9 @@ class ProductController extends Controller
     {
         try {
             $product->delete();
+
             return response()->json('deleted');
-        }catch (\Exception $exception) {
+        } catch (\Exception $exception) {
             return abort(500, $exception->getMessage());
         }
 

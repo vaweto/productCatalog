@@ -3,7 +3,6 @@
 namespace Database\Seeders;
 
 use App\Models\ExternalSuppliers;
-use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 
 class ExternalSuppliersSeeder extends Seeder
@@ -14,8 +13,8 @@ class ExternalSuppliersSeeder extends Seeder
     public function run(): void
     {
         ExternalSuppliers::create([
-           'name' => 'httpbin.org',
-           'url' => 'http://httpbin.org/post'
+            'name' => 'httpbin.org',
+            'url' => 'http://httpbin.org/post',
         ]);
     }
 }

@@ -17,7 +17,7 @@ return new class extends Migration
             $table->string('name');
             $table->string('code')->unique();
             $table->foreignIdFor(Category::class)->nullable()->constrained();
-            $table->float('price','10',2);
+            $table->float('price', '10', 2);
             $table->dateTime('released_at')->nullable();
             $table->timestamps();
 

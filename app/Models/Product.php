@@ -24,16 +24,16 @@ class Product extends Model
         'category_id',
         'price',
         'created_at',
-        'updated_at'
+        'updated_at',
     ];
 
     protected $casts = [
-      'released_at' => 'date'
+        'released_at' => 'date',
     ];
 
     //Filters
     protected $filters = [
-        'category' => CategoryFilter::class
+        'category' => CategoryFilter::class,
     ];
 
     //Relationships
@@ -50,7 +50,7 @@ class Product extends Model
     //Scopes
     public function scopeFilter(Builder $builder, $request)
     {
-        return  $this->filter($builder, $request);
+        return $this->filter($builder, $request);
     }
 
     //Accessors
@@ -61,9 +61,10 @@ class Product extends Model
     {
         return Attribute::make(
             get: function () {
-                if($this->released_at) {
+                if ($this->released_at) {
                     return $this->released_at->lte(Carbon::now());
                 }
+
                 return false;
             }
         );

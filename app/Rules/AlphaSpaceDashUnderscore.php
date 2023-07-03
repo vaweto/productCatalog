@@ -15,9 +15,8 @@ class AlphaSpaceDashUnderscore implements ValidationRule
     public function validate(string $attribute, mixed $value, Closure $fail): void
     {
         // Regular expression to allow letters, spaces, dashes, and underscores
-        if(!preg_match('/^[A-Za-z\s\-_]+$/', $value) ) {
+        if (! preg_match('/^[A-Za-z\s\-_]+$/', $value)) {
             $fail('The :attribute must be letters, spaces, dashes, and underscores.');
-        };
+        }
     }
-
 }

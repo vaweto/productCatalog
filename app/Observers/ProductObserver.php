@@ -14,8 +14,8 @@ class ProductObserver
     public function created(Product $product): void
     {
         $external = ExternalSuppliers::where('active', 1)->get();
-        $external->each(function ($external) use ($product){
-           dispatch(new BroadcastProductJob($external, $product, $product->getDirty()));
+        $external->each(function ($external) use ($product) {
+            dispatch(new BroadcastProductJob($external, $product, $product->getDirty()));
         });
     }
 
@@ -25,7 +25,7 @@ class ProductObserver
     public function updated(Product $product): void
     {
         $external = ExternalSuppliers::where('active', 1)->get();
-        $external->each(function ($external) use ($product){
+        $external->each(function ($external) use ($product) {
             dispatch(new BroadcastProductJob($external, $product, $product->getDirty()));
         });
     }

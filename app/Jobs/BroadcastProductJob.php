@@ -5,7 +5,6 @@ namespace App\Jobs;
 use App\Models\ExternalSuppliers;
 use App\Models\Product;
 use Illuminate\Bus\Queueable;
-use Illuminate\Contracts\Queue\ShouldBeUnique;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
 use Illuminate\Queue\InteractsWithQueue;
@@ -45,8 +44,7 @@ class BroadcastProductJob implements ShouldQueue
         public ExternalSuppliers $external,
         public Product $product,
         public $changes
-    )
-    {
+    ) {
         $this->onQueue('suppliers');
     }
 
@@ -60,20 +58,20 @@ class BroadcastProductJob implements ShouldQueue
             dump(
                 [
                     ...$this->product->toArray(),
-                    'changes' => $this->changes
+                    'changes' => $this->changes,
                 ]
             );
             $response = Http::post($this->external->url, [
                 ...$this->product->toArray(),
-                'changes' => $this->changes
+                'changes' => $this->changes,
             ]);
 
-            if(!$response->ok()) {
+            if (! $response->ok()) {
                 $this->fail();
             }
-        }catch (Exception $exception) {
+        } catch (Exception $exception) {
             logger($exception->getMessage());
-            logger($this->external->name .' failed on ' . $this->product->id);
+            logger($this->external->name.' failed on '.$this->product->id);
         }
 
     }

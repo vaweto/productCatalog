@@ -25,7 +25,7 @@ class ProductWithLinksResource extends JsonResource
                     'method' => 'delete',
                     'url' => route('product.destroy', ['product' => $this->id]),
                 ],
-            ]
+            ],
         ];
     }
 }

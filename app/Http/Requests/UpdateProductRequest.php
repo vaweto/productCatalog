@@ -23,11 +23,11 @@ class UpdateProductRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'name' => ['unique:products,name','max:10', new AlphaSpaceDashUnderscore()],
+            'name' => ['unique:products,name', 'max:10', new AlphaSpaceDashUnderscore()],
             'code' => 'unique:products,code|alpha_dash:ascii|lowercase|max:255',
             'category_id' => 'exists:App\Models\Category,id',
             'price' => 'decimal:0,2',
-            'released_at' => 'date|after_or_equal:now' ,
+            'released_at' => 'date|after_or_equal:now',
             'tags.*' => 'exists:App\Models\Tag,id',
         ];
     }

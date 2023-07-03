@@ -11,6 +11,6 @@ class ExternalSuppliers extends Model
 
     protected $fillable = [
         'name',
-        'url'
+        'url',
     ];
 }

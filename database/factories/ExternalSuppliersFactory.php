@@ -18,7 +18,7 @@ class ExternalSuppliersFactory extends Factory
     {
         return [
             'name' => $this->faker->name,
-            'url' => $this->faker->url
+            'url' => $this->faker->url,
         ];
     }
 }

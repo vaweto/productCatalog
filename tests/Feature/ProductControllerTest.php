@@ -98,7 +98,7 @@ class ProductControllerTest extends TestCase
 
         Product::factory()->create(['category_id' => $category->id]);
 
-        $response = $this->json('get', 'api/products/' . 99999999999999999999999999)
+        $this->json('get', 'api/products/' . 99999999999999999999999999)
             ->assertStatus(404);
     }
 

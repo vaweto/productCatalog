@@ -11,10 +11,10 @@ trait HasFilters
     {
         $filters = array_filter($request->only(array_keys($this->filters)));
 
-        foreach($filters as $filter => $value)
-        {
+        foreach ($filters as $filter => $value) {
             $this->resolveFilter($filter)->filter($builder, $value);
         }
+
         return $builder;
     }
 

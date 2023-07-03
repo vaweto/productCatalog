@@ -32,7 +32,7 @@ class ProductResource extends JsonResource
                 return $this->tags->map(function ($tag) {
                     return [
                         'id' => $tag->id,
-                        'name' => $tag->name
+                        'name' => $tag->name,
                     ];
                 });
             }),
